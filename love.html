@@ -33,17 +33,18 @@ body {
     overflow: hidden;
     border-radius: 12px;
     margin-bottom: 20px;
+    touch-action: pan-y;
 }
 
 .slider-track {
     display: flex;
-    transition: transform 1s ease-in-out;
+    transition: transform 0.3s ease;
 }
 
 .slider-track img {
     flex: 0 0 100%;
     width: 100%;
-    height: 100%;
+    height: 500px; /* default height for desktop */
     object-fit: cover;
     border-radius: 12px;
     transition: transform 0.5s ease, opacity 0.5s ease;
@@ -55,29 +56,6 @@ body {
     opacity: 1;
 }
 
-/* ================= BUTTONS ================= */
-.prev, .next {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background-color: rgba(255,255,255,0.8);
-    border: none;
-    font-size: 36px;
-    cursor: pointer;
-    border-radius: 50%;
-    padding: 8px 16px;
-    z-index: 10;
-    transition: 0.3s;
-}
-
-.prev:hover, .next:hover {
-    background-color: #ff9bb8;
-    color: white;
-}
-
-.prev { left: 15px; }
-.next { right: 15px; }
-
 /* ================= SLIDE DOTS ================= */
 .dots-container {
     display: flex;
@@ -88,7 +66,7 @@ body {
 .dot {
     width: 12px;
     height: 12px;
-    margin: 30px;
+    margin: 0 6px;
     background-color: #fff;
     border-radius: 50%;
     cursor: pointer;
@@ -103,7 +81,7 @@ body {
 /* ================= TEXT ================= */
 h1 {
     color: darkred;
-    margin-bottom: 12px;
+    margin: 12px 0;
     font-size: 26px;
 }
 
@@ -119,16 +97,20 @@ p {
 }
 
 /* ================= MOBILE ================= */
+@media (max-width: 1024px) {
+    .slider-track img { height: 400px; }
+}
+
 @media (max-width: 768px) {
-    .slider-track img {
-        height: 250px;
-    }
+    .slider-track img { height: 300px; }
+    h1 { font-size: 22px; }
+    p { font-size: 15px; }
 }
 
 @media (max-width: 480px) {
-    .slider-track img {
-        height: 180px;
-    }
+    .slider-track img { height: 200px; }
+    h1 { font-size: 20px; }
+    p { font-size: 14px; }
 }
 
 /* ================= FLOATING HEARTS ================= */
@@ -156,8 +138,6 @@ p {
 
     <!-- PHOTO SLIDER -->
     <div class="slider-container">
-        <button class="prev">&#10094;</button>
-        <button class="next">&#10095;</button>
         <div class="slider-track">
             <img src="love1.jpg" alt="Love1" class="active">
             <img src="love2.jpg" alt="Love2">
@@ -177,7 +157,7 @@ p {
 
     <p>
         Merry Christmas and Happy New Year ပါ အယ်နီလေးရေ...  
-        ဒီက ဦးကပ်စေးကြီး ပေးတဲ့ ဒီလက်ဆောင်လေးကို သဘောကျမယ်လို့ ယုံကြည်ပါတယ်။  
+        ဒီက ကိုကပ်စေးကြီး ပေးတဲ့ ဒီလက်ဆောင်လေးကို သဘောကျမယ်လို့ ယုံကြည်ပါတယ်။  
         အမြဲအရိပ်တကြည့်ကြည့်နဲ့နေချင်တယ်၊ သဲအနားမှာဘဲ 24/7 ရှိနေချင်တယ်။  
         <br><br>
         ကိုယ့်ဘေးနားမှာ ရှိနေပေးပြီး၊ သဲရဲ့ဂရုစိုက်မှုတွေ၊ ချစ်ခြင်းမေတ္တာတွေ၊  
@@ -200,10 +180,7 @@ p {
 // ================= PHOTO SLIDER JS =================
 const track = document.querySelector('.slider-track');
 const slides = Array.from(track.children);
-const prevBtn = document.querySelector('.prev');
-const nextBtn = document.querySelector('.next');
 const dotsContainer = document.querySelector('.dots-container');
-
 let index = 0;
 
 // Create dots
@@ -227,14 +204,48 @@ function updateSlider() {
     dots[index].classList.add('active');
 }
 
-nextBtn.addEventListener('click', () => {
-    index = (index + 1) % slides.length;
-    updateSlider();
+// Swipe / Drag support
+let startX = 0;
+let isDragging = false;
+
+track.addEventListener('mousedown', e => {
+    isDragging = true;
+    startX = e.pageX;
 });
 
-prevBtn.addEventListener('click', () => {
-    index = (index - 1 + slides.length) % slides.length;
+track.addEventListener('touchstart', e => {
+    isDragging = true;
+    startX = e.touches[0].pageX;
+});
+
+track.addEventListener('mousemove', e => {
+    if(!isDragging) return;
+    const delta = e.pageX - startX;
+});
+
+track.addEventListener('touchmove', e => {
+    if(!isDragging) return;
+    const delta = e.touches[0].pageX - startX;
+});
+
+track.addEventListener('mouseup', e => {
+    if(!isDragging) return;
+    const delta = e.pageX - startX;
+    if(delta > 50) { index = (index - 1 + slides.length) % slides.length; }
+    if(delta < -50) { index = (index + 1) % slides.length; }
     updateSlider();
+    isDragging = false;
+});
+
+track.addEventListener('mouseleave', e => { isDragging = false; });
+
+track.addEventListener('touchend', e => {
+    if(!isDragging) return;
+    const delta = e.changedTouches[0].pageX - startX;
+    if(delta > 50) { index = (index - 1 + slides.length) % slides.length; }
+    if(delta < -50) { index = (index + 1) % slides.length; }
+    updateSlider();
+    isDragging = false;
 });
 
 // Autoplay
@@ -255,12 +266,10 @@ function createFloatingHeart() {
     heart.style.color = heartColors[Math.floor(Math.random() * heartColors.length)];
     heart.style.animationDuration = (Math.random() * 5 + 5) + 's';
     document.body.appendChild(heart);
-
-    // Remove after animation
     setTimeout(() => heart.remove(), 10000);
 }
 
-setInterval(createFloatingHeart, 300);
+setInterval(createFloatingHeart, 1500);
 </script>
 
 </body>
