@@ -2,7 +2,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>For You ❤️</title>
+
     <style>
         body {
             margin: 0;
@@ -11,52 +13,112 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh;
         }
 
         .card {
             background: white;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            padding: 28px;
+            border-radius: 18px;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.25);
             text-align: center;
-            max-width: 350px;
+            max-width: 460px;
+            width: 95%;
         }
 
-        img {
+        /* PHOTO GRID */
+        .photo-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 18px;
+        }
+
+        .photo-grid img {
             width: 100%;
+            height: 100px;
+            object-fit: cover;
             border-radius: 12px;
-            margin-bottom: 15px;
+            border: 2px solid #ffd1dc;
+        }
+
+        /* BIG CENTER PHOTO */
+        .big-photo {
+            grid-column: 2 / 3;
+            grid-row: 2 / 3;
+            height: 220px;
+            border: 3px solid #ff9bb8;
         }
 
         h1 {
             color: #d6336c;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
+            font-size: 24px;
         }
 
         p {
-            font-size: 16px;
+            font-size: 15px;
             color: #444;
-            line-height: 1.5;
+            line-height: 1.7;
         }
 
         .heart {
-            font-size: 24px;
-            margin-top: 10px;
+            font-size: 26px;
+            margin-top: 15px;
+        }
+
+        /* Mobile fine-tuning */
+        @media (max-width: 480px) {
+            .photo-grid img {
+                height: 90px;
+            }
+
+            .big-photo {
+                height: 200px;
+            }
         }
     </style>
 </head>
 <body>
 
 <div class="card">
-    <img src="love.jpeg" alt="For You">
-    <h1>My Love ❤️</h1>
+
+    <!-- PHOTO SECTION -->
+    <div class="photo-grid">
+        <img src="love2.jpg" alt="">
+        <img src="love3.jpg" alt="">
+        <img src="love4.jpg" alt="">
+
+        <img src="love5.jpg" alt="">
+        <img src="love1.jpg" class="big-photo" alt="My Love ❤️">
+        <img src="love6.jpg" alt="">
+
+        <img src="love7.jpg" alt="">
+        <img src="love8.jpg" alt="">
+        <img src="love9.jpg" alt="">
+    </div>
+
+    <h1>❤️အချစ်တုံးလေး Ms.Annie Ye Naung သို့❤️</h1>
+
     <p>
-        Every day with you feels special.  
-        This little QR code can’t show how much you mean to me,  
-        but I hope it makes you smile 😊
+        Merry Christmas and Happy New Year ပါ အယ်နီလေးရေ...  
+        ဒီက ဦးကပ်စေးကြီး ပေးတဲ့ ဒီလက်ဆောင်လေးကို သဘောကျမယ်လို့ ယုံကြည်ပါတယ်။  
+        အမြဲအရိပ်တကြည့်ကြည့်နဲ့နေချင်တယ်၊ သဲအနားမှာဘဲ 24/7 ရှိနေချင်တယ်။  
+        <br><br>
+        ကိုယ့်ဘေးနားမှာ ရှိနေပေးပြီး၊ သဲရဲ့ဂရုစိုက်မှုတွေ၊ ချစ်ခြင်းမေတ္တာတွေ၊  
+        သည်းခံခြင်းတွေ အတွက် တကယ်ပဲ ကျေးဇူးတင်ပါတယ်။  
+        <br><br>
+        လာမယ့် 2026 နှစ်သစ်မှာလည်း သဲလေး လိုအင်ဆန္ဒတွေ ပြည့်ဝ  
+        ကျန်းမာပြီး ကိုယ်နဲ့အတူ အိမ်မက်တွေအကောင်အထည်ဖော်  
+        ပျော်ရွှင်မှုတွေပိုင်ဆိုင်နိုင်ပါစေလို့ ဆုတောင်းပေးပါတယ်။  
+        <br><br>
+        အရမ်းချစ်တယ်နော် ❤️  
+        ရစ်တာတွေ၊ ပြဿနာရှာတာတွေကို အမြဲသည်းခံပေးလို့  
+        ချစ်ခြင်းတွေ ၂၅၀ ဖိုး ပိုထည့်ပေးလိုက်တယ်နော်။
     </p>
-    <div class="heart">💖💖💖</div>
+
+    <div class="heart">💖 💖 💖</div>
+
 </div>
 
 </body>
