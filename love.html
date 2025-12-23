@@ -6,7 +6,7 @@
 <title>For You ❤️</title>
 
 <style>
-    /* ================= BODY ================= */
+/* ================= BODY ================= */
 body {
     margin: 0;
     font-family: 'Arial', sans-serif;
@@ -44,13 +44,12 @@ body {
 .slider-track img {
     flex: 0 0 100%;
     width: 100%;
-    height: 500px; /* default desktop height */
+    height: 500px;
     object-fit: cover;
     border-radius: 12px;
     transition: transform 0.5s ease, opacity 0.5s ease;
 }
 
-/* Active zoom effect */
 .slider-track img.active {
     transform: scale(1.05);
     opacity: 1;
@@ -60,7 +59,7 @@ body {
 .dots-container {
     display: flex;
     justify-content: center;
-    margin-top: 30px;
+    margin-top: 20px;
 }
 
 .dot {
@@ -96,21 +95,38 @@ p {
     margin-top: 15px;
 }
 
+/* ================= PLAY SONG BUTTON ================= */
+#play-song-btn {
+    background-color: #ff4d6d;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    font-size: 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: 0.3s;
+}
+
+#play-song-btn:hover {
+    background-color: #ff1a75;
+}
+
 /* ================= MOBILE / RESPONSIVE ================= */
 @media (max-width: 1024px) {
-    .slider-track img { height: 600px; object-fit: cover; } /* taller for tablets */
+    .slider-track img { height: 600px; }
     h1 { font-size: 24px; }
     p { font-size: 15px; }
 }
 
 @media (max-width: 768px) {
-    .slider-track img { height: 450px; object-fit: cover; } /* portrait for small tablets */
+    .slider-track img { height: 450px; }
     h1 { font-size: 22px; }
     p { font-size: 15px; }
 }
 
 @media (max-width: 480px) {
-    .slider-track img { height: 500px; object-fit: cover; } /* mobile portrait */
+    .slider-track img { height: 500px; }
     h1 { font-size: 20px; }
     p { font-size: 14px; }
 }
@@ -132,7 +148,6 @@ p {
     75% { transform: translate(15px,-90px) rotate(135deg); }
     100% { transform: translate(0,-120px) rotate(180deg); }
 }
-
 </style>
 </head>
 <body>
@@ -175,12 +190,15 @@ p {
         ချစ်ခြင်းတွေ ၂၅၀ ဖိုး ပိုထည့်ပေးလိုက်တယ်နော်။
     </p>
 
-    <div class="heart">💖 💖 💖</div>
+    <!-- PLAY SONG BUTTON -->
+    <button id="play-song-btn">🎵 Play Song</button>
+    <audio id="my-song" src="song.mp3"></audio>
 
+    <div class="heart">💖 💖 💖</div>
 </div>
 
 <script>
-// ================= PHOTO SLIDER JS =================
+// ================= PHOTO SLIDER =================
 const track = document.querySelector('.slider-track');
 const slides = Array.from(track.children);
 const dotsContainer = document.querySelector('.dots-container');
@@ -208,56 +226,28 @@ function updateSlider() {
 }
 
 // Swipe / Drag support
-let startX = 0;
-let isDragging = false;
-
-track.addEventListener('mousedown', e => {
-    isDragging = true;
-    startX = e.pageX;
-});
-
-track.addEventListener('touchstart', e => {
-    isDragging = true;
-    startX = e.touches[0].pageX;
-});
-
-track.addEventListener('mousemove', e => {
-    if(!isDragging) return;
-    const delta = e.pageX - startX;
-});
-
-track.addEventListener('touchmove', e => {
-    if(!isDragging) return;
-    const delta = e.touches[0].pageX - startX;
-});
-
-track.addEventListener('mouseup', e => {
-    if(!isDragging) return;
-    const delta = e.pageX - startX;
-    if(delta > 50) { index = (index - 1 + slides.length) % slides.length; }
-    if(delta < -50) { index = (index + 1) % slides.length; }
-    updateSlider();
-    isDragging = false;
-});
-
+let startX = 0, isDragging = false;
+track.addEventListener('mousedown', e => { isDragging = true; startX = e.pageX; });
+track.addEventListener('touchstart', e => { isDragging = true; startX = e.touches[0].pageX; });
+track.addEventListener('mousemove', e => { if(!isDragging) return; });
+track.addEventListener('touchmove', e => { if(!isDragging) return; });
+track.addEventListener('mouseup', e => { handleDrag(e.pageX); });
 track.addEventListener('mouseleave', e => { isDragging = false; });
+track.addEventListener('touchend', e => { handleDrag(e.changedTouches[0].pageX); });
 
-track.addEventListener('touchend', e => {
+function handleDrag(endX) {
     if(!isDragging) return;
-    const delta = e.changedTouches[0].pageX - startX;
-    if(delta > 50) { index = (index - 1 + slides.length) % slides.length; }
-    if(delta < -50) { index = (index + 1) % slides.length; }
+    const delta = endX - startX;
+    if(delta > 50) index = (index - 1 + slides.length) % slides.length;
+    if(delta < -50) index = (index + 1) % slides.length;
     updateSlider();
     isDragging = false;
-});
+}
 
 // Autoplay
-setInterval(() => {
-    index = (index + 1) % slides.length;
-    updateSlider();
-}, 4000);
+setInterval(() => { index = (index + 1) % slides.length; updateSlider(); }, 4000);
 
-// ================= FLOATING HEARTS JS =================
+// ================= FLOATING HEARTS =================
 const heartColors = ['#ff4d6d', '#ff99c8', '#ff66b3', '#ff3366', '#ff1a75'];
 function createFloatingHeart() {
     const heart = document.createElement('div');
@@ -271,8 +261,20 @@ function createFloatingHeart() {
     document.body.appendChild(heart);
     setTimeout(() => heart.remove(), 10000);
 }
-
 setInterval(createFloatingHeart, 1500);
+
+// ================= PLAY SONG BUTTON =================
+const playBtn = document.getElementById('play-song-btn');
+const audio = document.getElementById('my-song');
+playBtn.addEventListener('click', () => {
+    if(audio.paused) {
+        audio.play();
+        playBtn.innerText = "⏸ Pause Song";
+    } else {
+        audio.pause();
+        playBtn.innerText = "🎵 Play Song";
+    }
+});
 </script>
 
 </body>
