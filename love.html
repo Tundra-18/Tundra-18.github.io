@@ -6,141 +6,171 @@
 <title>For You ❤️</title>
 
 <style>
-    /* ================= BODY ================= */
-    body {
-        margin: 0;
-        font-family: 'Arial', sans-serif;
-        background: linear-gradient(to bottom, #ffdde1, #ee9ca7);
-        overflow-x: hidden;
-        position: relative;
+/* ================= BODY ================= */
+body {
+    margin: 0;
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(to bottom, #ffdde1, #ee9ca7);
+    overflow-x: hidden;
+    position: relative;
+}
+
+/* ================= CARD ================= */
+.card {
+    background: pink;
+    padding: 20px;
+    border-radius: 18px;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.25);
+    text-align: center;
+    max-width: 1000px;
+    margin: 40px auto;
+}
+
+/* ================= SLIDER ================= */
+.slider-container {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    border-radius: 12px;
+    margin-bottom: 20px;
+}
+
+.slider-track {
+    display: flex;
+    transition: transform 1s ease-in-out;
+}
+
+.slider-track img {
+    flex: 0 0 100%;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 12px;
+    transition: transform 0.5s ease, opacity 0.5s ease;
+}
+
+/* Active zoom effect */
+.slider-track img.active {
+    transform: scale(1.05);
+    opacity: 1;
+}
+
+/* ================= BUTTONS ================= */
+.prev, .next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(255,255,255,0.8);
+    border: none;
+    font-size: 36px;
+    cursor: pointer;
+    border-radius: 50%;
+    padding: 8px 16px;
+    z-index: 10;
+    transition: 0.3s;
+}
+
+.prev:hover, .next:hover {
+    background-color: #ff9bb8;
+    color: white;
+}
+
+.prev { left: 15px; }
+.next { right: 15px; }
+
+/* ================= SLIDE DOTS ================= */
+.dots-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.dot {
+    width: 12px;
+    height: 12px;
+    margin: 30px;
+    background-color: #fff;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: 0.3s;
+    border: 2px solid #ff99c8;
+}
+
+.dot.active {
+    background-color: #ff4d6d;
+}
+
+/* ================= TEXT ================= */
+h1 {
+    color: darkred;
+    margin-bottom: 12px;
+    font-size: 26px;
+}
+
+p {
+    font-size: 16px;
+    color: black;
+    line-height: 1.7;
+}
+
+.heart {
+    font-size: 26px;
+    margin-top: 15px;
+}
+
+/* ================= MOBILE ================= */
+@media (max-width: 768px) {
+    .slider-track img {
+        height: 250px;
     }
+}
 
-    /* ================= CARD ================= */
-    .card {
-        background: pink;
-        padding: 20px;
-        border-radius: 18px;
-        box-shadow: 0 12px 30px rgba(0,0,0,0.25);
-        text-align: center;
-        max-width: 1000px;
-        margin: 40px auto;
+@media (max-width: 480px) {
+    .slider-track img {
+        height: 180px;
     }
+}
 
-    /* ================= PHOTO GRID ================= */
-    .photo-grid {
-        display: grid;
-        grid-template-columns: repeat(5, 1fr);
-        grid-auto-rows: 150px;
-        gap: 10px;
-        margin-bottom: 20px;
-    }
+/* ================= FLOATING HEARTS ================= */
+.floating-heart {
+    position: fixed;
+    pointer-events: none;
+    z-index: 9999;
+    font-size: 24px;
+    opacity: 0.9;
+    animation: float linear infinite;
+}
 
-    .photo-grid img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        border-radius: 12px;
-        border: 2px solid #ffd1dc;
-        transition: transform 0.3s;
-    }
-
-    .photo-grid img:hover {
-        transform: scale(1.05);
-    }
-
-    /* ================= BIG CENTER PHOTO ================= */
-    .big-photo {
-        grid-column: 2 / 5; /* spans 3 columns */
-        grid-row: 1 / 3;    /* spans 2 rows */
-        height: 100%;
-        border: 3px solid #ff9bb8;
-    }
-
-    h1 {
-        color: darkred;
-        margin-bottom: 12px;
-        font-size: 26px;
-    }
-
-    p {
-        font-size: 16px;
-        color: black;
-        line-height: 1.7;
-    }
-
-    .heart {
-        font-size: 26px;
-        margin-top: 15px;
-    }
-
-    /* ================= MOBILE RESPONSIVE ================= */
-    @media (max-width: 1024px) {
-        .photo-grid {
-            grid-template-columns: repeat(4, 1fr);
-            grid-auto-rows: 130px;
-        }
-
-        .big-photo {
-            grid-column: 2 / 4;
-            grid-row: 1 / 3;
-        }
-    }
-
-    @media (max-width: 768px) {
-        .photo-grid {
-            grid-template-columns: repeat(3, 1fr);
-            grid-auto-rows: 120px;
-        }
-
-        .big-photo {
-            grid-column: 1 / 4;
-            grid-row: 2 / 4;
-        }
-    }
-
-    @media (max-width: 480px) {
-        .photo-grid {
-            grid-template-columns: repeat(2, 1fr);
-            grid-auto-rows: 100px;
-        }
-
-        .big-photo {
-            grid-column: 1 / 3;
-            grid-row: 2 / 4;
-        }
-    }
-
-    /* ================= FLOATING HEARTS ================= */
-    .floating-heart {
-        position: fixed;
-        font-size: 24px;
-        animation: floatUp linear infinite;
-        pointer-events: none;
-        z-index: 9999;
-    }
-
-    @keyframes floatUp {
-        0% { transform: translateY(0) scale(1); opacity: 1; }
-        100% { transform: translateY(-100vh) scale(1.5); opacity: 0; }
-    }
+@keyframes float {
+    0% { transform: translate(0,0) rotate(0deg); }
+    25% { transform: translate(20px,-30px) rotate(45deg); }
+    50% { transform: translate(-20px,-60px) rotate(90deg); }
+    75% { transform: translate(15px,-90px) rotate(135deg); }
+    100% { transform: translate(0,-120px) rotate(180deg); }
+}
 </style>
 </head>
 <body>
 
 <div class="card">
 
-    <!-- PHOTO GRID -->
-    <div class="photo-grid">
-        <img src="love2.jpg" alt="">
-        <img src="love3.jpg" alt="">
-        <img src="love1.jpg" class="big-photo" alt="My Love ❤️">
-        <img src="love4.jpg" alt="">
-        <img src="love5.jpg" alt="">
-        <img src="love6.jpg" alt="">
-        <img src="love7.jpg" alt="">
-        <img src="love8.jpg" alt="">
-        <img src="love9.jpg" alt="">
-        <img src="love10.jpg" alt="">
+    <!-- PHOTO SLIDER -->
+    <div class="slider-container">
+        <button class="prev">&#10094;</button>
+        <button class="next">&#10095;</button>
+        <div class="slider-track">
+            <img src="love1.jpg" alt="Love1" class="active">
+            <img src="love2.jpg" alt="Love2">
+            <img src="love3.jpg" alt="Love3">
+            <img src="love4.jpg" alt="Love4">
+            <img src="love5.jpg" alt="Love5">
+            <img src="love6.jpg" alt="Love6">
+            <img src="love7.jpg" alt="Love7">
+            <img src="love8.jpg" alt="Love8">
+            <img src="love9.jpg" alt="Love9">
+            <img src="love10.jpg" alt="Love10">
+        </div>
+        <div class="dots-container"></div>
     </div>
 
     <h1>❤️ To Ms.Annie Ye Naung ❤️</h1>
@@ -167,24 +197,70 @@
 </div>
 
 <script>
-    // Floating hearts animation
-    const colors = ['#ff4d6d', '#ff99c8', '#ff66b3', '#ff3366', '#ff1a75'];
-    function createHeart() {
-        const heart = document.createElement('div');
-        heart.classList.add('floating-heart');
-        heart.innerText = '💖';
-        heart.style.left = Math.random() * window.innerWidth + 'px';
-        heart.style.fontSize = (Math.random() * 20 + 20) + 'px';
-        heart.style.color = colors[Math.floor(Math.random() * colors.length)];
-        heart.style.animationDuration = (Math.random() * 3 + 3) + 's';
-        document.body.appendChild(heart);
+// ================= PHOTO SLIDER JS =================
+const track = document.querySelector('.slider-track');
+const slides = Array.from(track.children);
+const prevBtn = document.querySelector('.prev');
+const nextBtn = document.querySelector('.next');
+const dotsContainer = document.querySelector('.dots-container');
 
-        setTimeout(() => {
-            heart.remove();
-        }, 1000000);
-    }
+let index = 0;
 
-    setInterval(createHeart, 500);
+// Create dots
+slides.forEach((_, i) => {
+    const dot = document.createElement('span');
+    dot.classList.add('dot');
+    if(i === 0) dot.classList.add('active');
+    dot.addEventListener('click', () => {
+        index = i;
+        updateSlider();
+    });
+    dotsContainer.appendChild(dot);
+});
+const dots = Array.from(dotsContainer.children);
+
+function updateSlider() {
+    track.style.transform = `translateX(${-100 * index}%)`;
+    slides.forEach(s => s.classList.remove('active'));
+    slides[index].classList.add('active');
+    dots.forEach(d => d.classList.remove('active'));
+    dots[index].classList.add('active');
+}
+
+nextBtn.addEventListener('click', () => {
+    index = (index + 1) % slides.length;
+    updateSlider();
+});
+
+prevBtn.addEventListener('click', () => {
+    index = (index - 1 + slides.length) % slides.length;
+    updateSlider();
+});
+
+// Autoplay
+setInterval(() => {
+    index = (index + 1) % slides.length;
+    updateSlider();
+}, 4000);
+
+// ================= FLOATING HEARTS JS =================
+const heartColors = ['#ff4d6d', '#ff99c8', '#ff66b3', '#ff3366', '#ff1a75'];
+function createFloatingHeart() {
+    const heart = document.createElement('div');
+    heart.classList.add('floating-heart');
+    heart.innerText = '💖';
+    heart.style.left = Math.random() * window.innerWidth + 'px';
+    heart.style.top = Math.random() * window.innerHeight + 'px';
+    heart.style.fontSize = (Math.random() * 20 + 20) + 'px';
+    heart.style.color = heartColors[Math.floor(Math.random() * heartColors.length)];
+    heart.style.animationDuration = (Math.random() * 5 + 5) + 's';
+    document.body.appendChild(heart);
+
+    // Remove after animation
+    setTimeout(() => heart.remove(), 10000);
+}
+
+setInterval(createFloatingHeart, 300);
 </script>
 
 </body>
