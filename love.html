@@ -6,7 +6,7 @@
 <title>For You ❤️</title>
 
 <style>
-/* ================= BODY ================= */
+    /* ================= BODY ================= */
 body {
     margin: 0;
     font-family: 'Arial', sans-serif;
@@ -44,7 +44,7 @@ body {
 .slider-track img {
     flex: 0 0 100%;
     width: 100%;
-    height: 500px; /* default height for desktop */
+    height: 500px; /* default desktop height */
     object-fit: cover;
     border-radius: 12px;
     transition: transform 0.5s ease, opacity 0.5s ease;
@@ -96,19 +96,21 @@ p {
     margin-top: 15px;
 }
 
-/* ================= MOBILE ================= */
+/* ================= MOBILE / RESPONSIVE ================= */
 @media (max-width: 1024px) {
-    .slider-track img { height: 400px; }
+    .slider-track img { height: 600px; object-fit: cover; } /* taller for tablets */
+    h1 { font-size: 24px; }
+    p { font-size: 15px; }
 }
 
 @media (max-width: 768px) {
-    .slider-track img { height: 300px; }
+    .slider-track img { height: 450px; object-fit: cover; } /* portrait for small tablets */
     h1 { font-size: 22px; }
     p { font-size: 15px; }
 }
 
 @media (max-width: 480px) {
-    .slider-track img { height: 200px; }
+    .slider-track img { height: 500px; object-fit: cover; } /* mobile portrait */
     h1 { font-size: 20px; }
     p { font-size: 14px; }
 }
@@ -130,6 +132,7 @@ p {
     75% { transform: translate(15px,-90px) rotate(135deg); }
     100% { transform: translate(0,-120px) rotate(180deg); }
 }
+
 </style>
 </head>
 <body>
