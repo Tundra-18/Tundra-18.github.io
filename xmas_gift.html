@@ -176,7 +176,7 @@ p {
 
     <p>
         Merry Christmas and Happy New Year ပါ အယ်နီလေးရေ...  
-        ဒီက ကိုကပ်စေးကြီး ပေးတဲ့ ဒီလက်ဆောင်လေးကို သဘောကျမယ်လို့ ယုံကြည်ပါတယ်။  
+        ဒီက ကိုကပ်စေးလေး ပေးတဲ့ ဒီလက်ဆောင်လေးကို သဘောကျမယ်လို့ ယုံကြည်ပါတယ်။  
         အမြဲအရိပ်တကြည့်ကြည့်နဲ့နေချင်တယ်၊ သဲအနားမှာဘဲ 24/7 ရှိနေချင်တယ်။  
         <br><br>
         ကိုယ့်ဘေးနားမှာ ရှိနေပေးပြီး၊ သဲရဲ့ဂရုစိုက်မှုတွေ၊ ချစ်ခြင်းမေတ္တာတွေ၊  
@@ -186,7 +186,7 @@ p {
         ကျန်းမာပြီး ကိုယ်နဲ့အတူ အိမ်မက်တွေအကောင်အထည်ဖော်  
         ပျော်ရွှင်မှုတွေပိုင်ဆိုင်နိုင်ပါစေလို့ ဆုတောင်းပေးပါတယ်။  
         <br><br>
-        အရမ်းချစ်တယ်နော် ❤️  
+        ❤️ အရမ်းချစ်တယ် ❤️  
         ရစ်တာတွေ၊ ပြဿနာရှာတာတွေကို အမြဲသည်းခံပေးလို့  
         ချစ်ခြင်းတွေ ၂၅၀ ဖိုး ပိုထည့်ပေးလိုက်တယ်နော်။
     </p>
@@ -194,8 +194,6 @@ p {
     <!-- PLAY SONG BUTTON -->
     <button id="play-song-btn">🎵 Play Song</button>
     <audio id="my-song" src="song.mp3" autoplay muted loop></audio>
-
-
 
     <div class="heart">💖 💖 💖</div>
 </div>
@@ -266,12 +264,14 @@ function createFloatingHeart() {
 }
 setInterval(createFloatingHeart, 1500);
 
-// ================= PLAY SONG BUTTON =================
-const playBtn = document.getElementById('play-song-btn');
+// ================= AUDIO =================
 const audio = document.getElementById('my-song');
+const playBtn = document.getElementById('play-song-btn');
+
+// Optional: Play/Pause button
 playBtn.addEventListener('click', () => {
-    if(audio.paused) {
-        audio.play();
+    if (audio.paused) {
+        audio.play().catch(() => {});
         playBtn.innerText = "⏸ Pause Song";
     } else {
         audio.pause();
@@ -279,22 +279,28 @@ playBtn.addEventListener('click', () => {
     }
 });
 
-// ================= AUTOPLAY ON PAGE LOAD (BROWSER COMPLIANT) =================
+// Try to autoplay muted on page load (some browsers allow it)
 window.addEventListener('load', () => {
     audio.play().catch(() => {});
 });
 
-// Unmute on first interaction anywhere (no button required)
-document.addEventListener('click', () => {
-    if (audio.muted) {
-        audio.muted = false;
-        audio.play();
-        playBtn.innerText = "⏸ Pause Song";
-    }
-}, { once: true });
+// Play audio on first interaction: scroll, click, or touch
+const enableAudio = () => {
+    if (audio.muted) audio.muted = false; // unmute
+    audio.play().catch(() => {});        // try to play
+    playBtn.innerText = "⏸ Pause Song"; // update button
 
+    // Remove event listeners after first trigger
+    document.removeEventListener('click', enableAudio);
+    document.removeEventListener('scroll', enableAudio);
+    document.removeEventListener('touchstart', enableAudio);
+};
+
+// Listen to scroll, click, or touch
+document.addEventListener('click', enableAudio, { once: true });
+document.addEventListener('scroll', enableAudio, { once: true, passive: true });
+document.addEventListener('touchstart', enableAudio, { once: true });
 
 </script>
-
 </body>
 </html>
